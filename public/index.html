@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MEAN App</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+    <style>
+        .navbar-custom {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body ng-app="meanapp" ng-controller="AppCtrl as app">
+
+<nav class="navbar navbar-inverse navbar-custom">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Продай кварти.РУ</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right" ng-if="!app.loggedAs.login">
+            <li><a href="#" id="signUpLink" ng-click="app.openRegisterForm()"><span class="glyphicon glyphicon-user"></span> Регистрация</a></li>
+            <li><a href="#" id="loginLink" ng-click="app.openLoginForm()"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" ng-if="app.loggedAs.login">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span ng-bind="app.loggedAs.login"></span></a> </li>
+            <li><a href="#" ng-click="app.createProduct()"><span class="glyphicon glyphicon-pencil"></span> Добавить объявление</a> </li>
+            <li><a href="#" ng-click="app.logout()"><span class="glyphicon glyphicon-off"></span> Выйти </a> </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="jumbotron">
+    <div class="container text-center">
+        <h1>Продай-кварти.РУ</h1>
+        <p>Сервис написан на MEAN стэке технологий (MongoDB, Express.JS, Angular.JS, NodeJS) и Bootstrap 3</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <table class="table table-bordered">
+        <tr ng-repeat="product in app.products">
+            <td><a href="#" ng-click="app.productInfo(product)">{{product.name}}</a></td>
+        </tr>
+
+    </table>
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="app.js"></script>
+<script src="loginForm/loginFormController.js"></script>
+<script src="registerForm/registerFormController.js"></script>
+<script src="product/productInfoController.js"></script>
+<script src="product/productCreateController.js"></script>
+</body>
+</html>
