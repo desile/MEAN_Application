@@ -6,7 +6,7 @@ meanapp.controller('productCreateController', function ($http, $uibModalInstance
     $http.defaults.withCredentials = true;
 
     $ctrl.ok = function () {
-        $http.post(url + "/add", {name:$ctrl.product.name}).then(
+        $http.put(url + "/products", {name:$ctrl.product.name}).then(
             function(res) {
                 $uibModalInstance.close();
             });

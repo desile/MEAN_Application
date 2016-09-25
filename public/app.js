@@ -57,7 +57,16 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
             resolve: {
                 product: function () {
                     return product;
+                },
+                loggedAs: function () {
+                    return app.loggedAs;
                 }
+            }
+        });
+
+        modalInstance.result.then(function (action) {
+            if(action == 'delete') {
+                loadProducts();
             }
         });
     };
@@ -77,7 +86,6 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
 
 
     function loadProducts() {
-        console.log("loadproducts");
         $http.get(url + "/products").success(function (products) {
             app.products = products;
         })

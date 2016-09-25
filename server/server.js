@@ -55,13 +55,24 @@ app.route("/products").get( function(req,res){
     });
 });
 
-app.route("/add").post( function(req,res) {
+app.route("/products").put( function(req,res) {
     if(!req.session.user){
         res.sendStatus(403);
     } else {
         var name = req.body.name;
         var product = new Product({name: name});
         product.save(function (err) {
+            res.send();
+        });
+    }
+});
+
+app.route("/products").delete( function(req,res) {
+    if(!req.session.user){
+        res.sendStatus(403);
+    } else {
+        var name = req.body.name;
+        Product.remove({ name: name }, function (err) {
             res.send();
         });
     }

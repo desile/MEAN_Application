@@ -6,6 +6,7 @@
         <span ng-bind="app.product.name"></span>
     </div>
     <div class="modal-footer">
+        <button ng-if="app.loggedAs" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
         <button class="btn btn-primary" type="button" ng-click="app.ok()">Откликнуться</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Закрыть</button>
     </div>
