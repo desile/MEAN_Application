@@ -24,7 +24,7 @@
             <li><a href="#" id="loginLink" ng-click="app.openLoginForm()"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" ng-if="app.loggedAs.login">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span ng-bind="app.loggedAs.login"></span></a> </li>
+            <li><a href="#" ng-click="app.openProfileForm()"><span class="glyphicon glyphicon-user"></span> <span ng-bind="app.loggedAs.login"></span></a> </li>
             <li><a href="#" ng-click="app.createAdvert()"><span class="glyphicon glyphicon-pencil"></span> Добавить объявление</a> </li>
             <li><a href="#" ng-click="app.logout()"><span class="glyphicon glyphicon-off"></span> Выйти </a> </li>
         </ul>
@@ -62,5 +62,6 @@
 <script src="registerForm/registerFormController.js"></script>
 <script src="advert/advertDetailsController.js"></script>
 <script src="advert/advertCreateController.js"></script>
+<script src="profileForm/profileFormController.js"></script>
 </body>
 </html>

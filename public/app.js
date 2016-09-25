@@ -22,6 +22,20 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
         })
     };
 
+    app.openProfileForm = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'profileForm/profileFormModal.html',
+            controller: 'profileFormController',
+            controllerAs: 'app',
+            resolve: {
+                user: function () {
+                    return app.loggedAs;
+                }
+            }
+        });
+    };
+
     app.openLoginForm = function(){
         var modalInstance = $uibModal.open({
             animation: true,
