@@ -12,7 +12,7 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
 
     app.saveProduct = function (newProduct) {
         $http.post(url + "/add", {name:newProduct}).success(function(){
-            loadProducts();
+            loadAdverts();
         })
     };
 
@@ -48,15 +48,15 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
         });
     };
 
-    app.productInfo = function (product){
+    app.advertDetails = function (advert){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'product/productInfoModal.html',
-            controller: 'productInfoController',
+            templateUrl: 'advert/advertDetailsModal.html',
+            controller: 'advertDetailsController',
             controllerAs: 'app',
             resolve: {
-                product: function () {
-                    return product;
+                advert: function () {
+                    return advert;
                 },
                 loggedAs: function () {
                     return app.loggedAs;
@@ -66,28 +66,28 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
 
         modalInstance.result.then(function (action) {
             if(action == 'delete') {
-                loadProducts();
+                loadAdverts();
             }
         });
     };
 
-    app.createProduct = function (){
+    app.createAdvert = function (){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'product/productCreateModal.html',
-            controller: 'productCreateController',
+            templateUrl: 'advert/advertCreateModal.html',
+            controller: 'advertCreateController',
             controllerAs: 'app'
         });
 
         modalInstance.result.then(function () {
-            loadProducts();
+            loadAdverts();
         });
     };
 
 
-    function loadProducts() {
-        $http.get(url + "/products").success(function (products) {
-            app.products = products;
+    function loadAdverts() {
+        $http.get(url + "/adverts").success(function (adverts) {
+            app.adverts = adverts;
         })
     }
 
@@ -98,5 +98,5 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
     }
 
     getSession();
-    loadProducts();
+    loadAdverts();
 }]);

@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(session({
     secret: 'secret_key',
     saveUninitialized: false,
-    resave: false,
+    resave: false
 }));
 //app.use(express.static(path.join(__dirname, 'public')));
 
@@ -49,13 +49,13 @@ app.route("/").get( function(req,res){
    res.send(req.session.user);
 });
 
-app.route("/products").get( function(req,res){
-    Product.find(function (err, products){
-        res.send(products);
+app.route("/adverts").get( function(req,res){
+    Product.find(function (err, adverts){
+        res.send(adverts);
     });
 });
 
-app.route("/products").put( function(req,res) {
+app.route("/adverts").put( function(req,res) {
     if(!req.session.user){
         res.sendStatus(403);
     } else {
@@ -67,7 +67,7 @@ app.route("/products").put( function(req,res) {
     }
 });
 
-app.route("/products").delete( function(req,res) {
+app.route("/adverts").delete( function(req,res) {
     if(!req.session.user){
         res.sendStatus(403);
     } else {
@@ -115,8 +115,8 @@ app.route("/register").post( function (req,res){
 app.listen(3111);
 
 /*
-var product = new Product({name: "SomeProduct"});
-product.save(function(err){
+var advert = new Product({name: "SomeProduct"});
+advert.save(function(err){
     if(err){
         console.log("failed");
     } else {

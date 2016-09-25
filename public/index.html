@@ -25,7 +25,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right" ng-if="app.loggedAs.login">
             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span ng-bind="app.loggedAs.login"></span></a> </li>
-            <li><a href="#" ng-click="app.createProduct()"><span class="glyphicon glyphicon-pencil"></span> Добавить объявление</a> </li>
+            <li><a href="#" ng-click="app.createAdvert()"><span class="glyphicon glyphicon-pencil"></span> Добавить объявление</a> </li>
             <li><a href="#" ng-click="app.logout()"><span class="glyphicon glyphicon-off"></span> Выйти </a> </li>
         </ul>
     </div>
@@ -42,8 +42,8 @@
 <div class="container">
 
     <table class="table table-bordered">
-        <tr ng-repeat="product in app.products">
-            <td><a href="#" ng-click="app.productInfo(product)">{{product.name}}</a></td>
+        <tr ng-repeat="advert in app.adverts">
+            <td><a href="#" ng-click="app.advertDetails(advert)">{{advert.name}}</a></td>
         </tr>
 
     </table>
@@ -60,7 +60,7 @@
 <script src="app.js"></script>
 <script src="loginForm/loginFormController.js"></script>
 <script src="registerForm/registerFormController.js"></script>
-<script src="product/productInfoController.js"></script>
-<script src="product/productCreateController.js"></script>
+<script src="advert/advertDetailsController.js"></script>
+<script src="advert/advertCreateController.js"></script>
 </body>
 </html>

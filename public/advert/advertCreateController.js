@@ -1,12 +1,12 @@
-meanapp.controller('productCreateController', function ($http, $uibModalInstance) {
+meanapp.controller('advertCreateController', function ($http, $uibModalInstance) {
     var $ctrl = this;
-    $ctrl.product = {
+    $ctrl.advert = {
         name: ''
     };
     $http.defaults.withCredentials = true;
 
     $ctrl.ok = function () {
-        $http.put(url + "/products", {name:$ctrl.product.name}).then(
+        $http.put(url + "/adverts", {name:$ctrl.advert.name}).then(
             function(res) {
                 $uibModalInstance.close();
             });
