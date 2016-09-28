@@ -96,8 +96,8 @@ app.route("/adverts").delete( function(req,res) {
     if(!req.session.user){
         res.sendStatus(403);
     } else {
-        var name = req.body.name;
-        Product.remove({ name: name }, function (err) {
+        var id = req.body.advertId;
+        Advert.remove({ id: id }, function (err) {
             res.send();
         });
     }
