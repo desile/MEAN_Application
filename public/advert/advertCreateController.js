@@ -1,14 +1,19 @@
 meanapp.controller('advertCreateController', function ($http, $uibModalInstance) {
     var $ctrl = this;
-    $ctrl.advert = {
-        name: ''
-    };
+    $ctrl.advert = {};
+
     $http.defaults.withCredentials = true;
 
     $ctrl.ok = function () {
-        $http.put(url + "/adverts", {name:$ctrl.advert.name}).then(
+        $http.put(url + "/adverts", $ctrl.advert).then(
             function(res) {
-                $uibModalInstance.close();
+                if(res.data.err) {
+                    console.log(res.data);
+                    $ctrl.data = res.data;
+                    $('#createAdvertError').show();
+                }else {
+                    $uibModalInstance.close();
+                }
             });
     };
 

@@ -5,12 +5,32 @@
     <div class="modal-body">
         <form>
             <div class="form-group">
-                <label for="login">Название:</label>
-                <input type="text" class="form-control" id="login" ng-model="app.advert.name">
+                <label for="advTitle">Название:</label>
+                <input type="text" class="form-control" id="advTitle" ng-model="app.advert.title">
             </div>
-            <div id="loginError" class="alert alert-danger collapse">
+            <div class="form-group">
+                <label for="advFlatSize">Размер жиплощади:</label>
+                <input type="number" class="form-control" id="advFlatSize" ng-model="app.advert.flatSize">
+            </div>
+            <div class="form-group">
+                <label for="advRoomNumber">Количество комнат:</label>
+                <input type="number" class="form-control" id="advRoomNumber" ng-model="app.advert.roomNumber">
+            </div>
+            <div class="form-group">
+                <label for="advType">Тип жилища:</label>
+                <input type="text" class="form-control" id="advType" ng-model="app.advert.type">
+            </div>
+            <div class="form-group">
+                <label for="advLocation">Месторасположение:</label>
+                <input type="text" class="form-control" id="advLocation" ng-model="app.advert.location">
+            </div>
+            <div class="form-group">
+                <label for="advDescription">Описание:</label>
+                <input type="text" class="form-control" id="advDescription" ng-model="app.advert.description">
+            </div>
+            <div id="createAdvertError" class="alert alert-danger collapse">
                 <a class="close" ng-click="app.closeError()">&times;</a>
-                <span ng-bind="app.error"></span>
+                <span ng-bind="app.data.description"></span>: <span ng-bind="app.data.err.message">
             </div>
         </form>
     </div>

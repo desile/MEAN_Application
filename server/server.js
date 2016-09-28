@@ -11,6 +11,18 @@ var validator = require('express-validator');
 
 var app = express();
 
+/*
+TASK LIST
+1. Составить структуру модели Advert
+2. Взаимодействовать с объектами Advert в базе через их ID
+3. Наполнить форму для полноценного добавления объектов Advert (можно пока без фото)
+4. Наполнить темплэйт для полноценного просмотрао объектов Advert
+
+5. (?) Поменять loggedAs на нормальное название
+6. Сделать предобработчик запросов с проверкой ролей
+
+ */
+
 
 var whitelist = [
     'http://localhost:3111',
@@ -42,15 +54,15 @@ app.use(session({
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/meanapp');
 
-var Product = mongoose.model('Product', {name:String});
-var User = mongoose.model('User', {login:String, password:String, email:String, role:String});
+var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, photo:String, description:String, createdBy:String });
+var User = mongoose.model('User', {login:{type:String, unique:true}, password:String, email:String, role:String, phone:String, fName:String, sName:String});
 
 app.route("/").get( function(req,res){
    res.send(req.session.user);
 });
 
 app.route("/adverts").get( function(req,res){
-    Product.find(function (err, adverts){
+    Advert.find(function (err, adverts){
         res.send(adverts);
     });
 });
@@ -59,10 +71,23 @@ app.route("/adverts").put( function(req,res) {
     if(!req.session.user){
         res.sendStatus(403);
     } else {
-        var name = req.body.name;
-        var product = new Product({name: name});
-        product.save(function (err) {
-            res.send();
+        var reqAdvert = {
+            title: req.body.title,
+            flatSize: req.body.flatSize,
+            roomNumber: req.body.roomNumber,
+            type: req.body.type,
+            location: req.body.location,
+            photo: req.body.photo,
+            description: req.body.description,
+            createdBy: req.session.user.login
+        };
+        var advert = new Advert(reqAdvert);
+        advert.save(function (err,createdAdvert) {
+            if (err){
+                res.status(200).json({description: "Произошла ошибка!", err: err});
+            } else {
+                res.send(createdAdvert);
+            }
         });
     }
 });
@@ -82,7 +107,7 @@ app.route("/login").post( function(req,res) {
     var login = req.body.login;
     User.findOne({ login: login}, function(err,user){
         if (user){
-            req.session.user=user;
+            req.session.user={login: user.login, role: user.role};
             res.status(200).send({login: user.login, role: user.role});
         } else {
             res.status(200).json({error: 'Пользователь не найден'});
@@ -97,16 +122,21 @@ app.route("/logout").get( function(req,res) {
 });
 
 app.route("/register").post( function (req,res){
-    var login = req.body.login;
-    var password = req.body.pass;
-    var email = req.body.email;
-    var role = 'user';
-    var newUser = new User({login:login,password:password,email:email,role:role});
+    var registerData = {
+        login: req.body.login,
+        password: req.body.pass,
+        email: req.body.email,
+        phone: req.body.phone,
+        fName: req.body.fName,
+        sName: req.body.sName,
+        role: 'user'
+    };
+    var newUser = new User(registerData);
     newUser.save(function(err){
         if (err){
             res.status(200).json({error: "Произошла ошибка!"});
         } else {
-            req.session.user=newUser;
+            req.session.user={login: newUser.login, role: newUser.role};
             res.status(200).send({login: newUser.login, role: newUser.role});
         }
     })
@@ -115,7 +145,7 @@ app.route("/register").post( function (req,res){
 app.listen(3111);
 
 /*
-var advert = new Product({name: "SomeProduct"});
+var advert = new Advert({name: "SomeProduct"});
 advert.save(function(err){
     if(err){
         console.log("failed");

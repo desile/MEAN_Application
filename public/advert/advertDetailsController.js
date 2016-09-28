@@ -10,7 +10,7 @@ meanapp.controller('advertDetailsController', function ($http, $uibModalInstance
         $http({
                 method: 'DELETE',
                 url: url + '/adverts',
-                data:  {name:$ctrl.advert.name},
+                data:  {name:$ctrl.advert.title},
             headers: {'Content-Type': 'application/json;charset=utf-8'}
         }).then(
             function(res) {

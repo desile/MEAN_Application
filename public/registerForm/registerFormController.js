@@ -1,10 +1,6 @@
 meanapp.controller('registerFormController', function($http, $uibModalInstance){
     var $ctrl = this;
-    $ctrl.reg = {
-        login: '',
-        pass: '',
-        email: ''
-    }
+    $ctrl.reg = {};
 
     $ctrl.ok = function () {
         $http.post(url + "/register", $ctrl.reg).then(

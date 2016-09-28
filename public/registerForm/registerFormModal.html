@@ -16,6 +16,18 @@
                 <label for="regEmail">Email:</label>
                 <input type="email" class="form-control" id="regEmail" ng-model="app.reg.email">
             </div>
+            <div class="form-group">
+                <label for="regPhone">Телефон:</label>
+                <input type="tel" class="form-control" id="regPhone" ng-model="app.reg.phone">
+            </div>
+            <div class="form-group">
+                <label for="regFName">Имя:</label>
+                <input type="text" class="form-control" id="regFName" ng-model="app.reg.fName">
+            </div>
+            <div class="form-group">
+                <label for="regSName">Фамилия:</label>
+                <input type="text" class="form-control" id="regSName" ng-model="app.reg.sName">
+            </div>
             <div id="registerError" class="alert alert-danger collapse">
                 <a class="close" ng-click="app.closeError()">&times;</a>
                 <span ng-bind="app.error"></span>
