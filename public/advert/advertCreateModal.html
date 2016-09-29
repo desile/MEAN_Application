@@ -28,6 +28,24 @@
                 <label for="advDescription">Описание:</label>
                 <input type="text" class="form-control" id="advDescription" ng-model="app.advert.description">
             </div>
+            <div class="form-group" style="margin-bottom: 5px">
+                <label for="advImg"  class="btn btn-primary" >Выбрать фотографию</label>
+                <input type="file" name="advImg" id="advImg" nv-file-select="" uploader="uploader" multiple=""  style="visibility:hidden; height: 1px">
+            </div>
+            <table class="table-condensed">
+            <tr ng-repeat="item in uploader.queue">
+                <td>
+                    <span ng-bind="item.file.name"></span>
+                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                </td>
+            </tr>
+            </table>
+            <div>
+                Процесс загрузки объявления:
+                <div class="progress" style="">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }" style="width: 0%;"></div>
+                </div>
+            </div>
             <div id="createAdvertError" class="alert alert-danger collapse">
                 <a class="close" ng-click="app.closeError()">&times;</a>
                 <span ng-bind="app.data.description"></span>: <span ng-bind="app.data.err.message">
@@ -35,7 +53,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="app.ok()">Добавить</button>
+        <button class="btn btn-primary" type="button" ng-click="app.ok()">Разместить объявление</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Отмена</button>
     </div>
 </div>

@@ -7,7 +7,9 @@ var cors = require("cors");
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var multer = require('multer');
 var validator = require('express-validator');
+var path = require('path');
 
 var app = express();
 
@@ -50,21 +52,52 @@ app.use(session({
 }));
 //app.use(express.static(path.join(__dirname, 'public')));
 
+var storage = multer.diskStorage({
+    destination: function (req, file ,cb){
+        cb(null, './imgs/');
+    },
+    filename: function (req, file, cb){
+        console.log(req);
+        cb(null, req.body.id + ".jpg");
+    }
+});
+var upload = multer({ //multer settings
+    storage: storage
+}).single('advImg');
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/meanapp');
 
-var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, photo:String, description:String, createdBy:String });
+var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, img:String, description:String, createdBy:String });
 var User = mongoose.model('User', {login:{type:String, unique:true}, password:String, email:String, role:String, phone:String, fName:String, sName:String});
 
 app.route("/").get( function(req,res){
    res.send(req.session.user);
 });
 
+app.route("/adverts/img").get( function (req,res){
+    res.sendFile(req.query.id + '.jpg',{root:__dirname + '/imgs/'},function (err) {
+        if (err) {
+            res.json(err);
+        }
+    });
+});
+
 app.route("/adverts").get( function(req,res){
     Advert.find(function (err, adverts){
         res.send(adverts);
     });
+});
+
+app.route("/adverts/img").post( function(req, res) {
+    upload(req,res,function(err){
+        if(err){
+            res.json({error_code:1,err_desc:err});
+            return;
+        }
+        res.json({error_code:0,err_desc:null});
+    })
 });
 
 app.route("/adverts").put( function(req,res) {
@@ -77,7 +110,7 @@ app.route("/adverts").put( function(req,res) {
             roomNumber: req.body.roomNumber,
             type: req.body.type,
             location: req.body.location,
-            photo: req.body.photo,
+            img: req.body.img,
             description: req.body.description,
             createdBy: req.session.user.login
         };
@@ -86,7 +119,7 @@ app.route("/adverts").put( function(req,res) {
             if (err){
                 res.status(200).json({description: "Произошла ошибка!", err: err});
             } else {
-                res.send(createdAdvert);
+                res.status(200).json(createdAdvert);
             }
         });
     }

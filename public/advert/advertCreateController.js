@@ -1,5 +1,15 @@
-meanapp.controller('advertCreateController', function ($http, $uibModalInstance) {
+meanapp.controller('advertCreateController', function ($http, $scope, $uibModalInstance, FileUploader) {
     var $ctrl = this;
+    var uploader = $scope.uploader = new FileUploader({
+        url: url + '/adverts/img',
+        alias: 'advImg'
+    });
+    $scope.uploader.onBeforeUploadItem = onBeforeUploadItem;
+    function onBeforeUploadItem(item) {
+        item.formData.push({id: 'data'});
+        console.log(item);
+    }
+
     $ctrl.advert = {};
 
     $http.defaults.withCredentials = true;
@@ -12,6 +22,14 @@ meanapp.controller('advertCreateController', function ($http, $uibModalInstance)
                     $ctrl.data = res.data;
                     $('#createAdvertError').show();
                 }else {
+                    console.log(uploader.queue);
+                    console.log(res.data._id);
+                    $scope.uploader.onBeforeUploadItem = onBeforeUploadItem;
+                    function onBeforeUploadItem(item) {
+                        item.formData.push({id: res.data._id});
+                        console.log(item);
+                    }
+                    uploader.uploadAll();
                     $uibModalInstance.close();
                 }
             });

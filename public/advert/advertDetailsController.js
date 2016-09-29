@@ -5,6 +5,7 @@ meanapp.controller('advertDetailsController', function ($http, $uibModalInstance
     var $ctrl = this;
     $ctrl.advert = advert;
     $ctrl.loggedAs = loggedAs;
+    $ctrl.imgPath = url + "/adverts/img?id=" + advert._id;
 
     $ctrl.delete = function () {
         $http({
