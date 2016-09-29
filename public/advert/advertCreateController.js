@@ -2,7 +2,8 @@ meanapp.controller('advertCreateController', function ($http, $scope, $uibModalI
     var $ctrl = this;
     var uploader = $scope.uploader = new FileUploader({
         url: url + '/adverts/img',
-        alias: 'advImg'
+        alias: 'advImg',
+        queueLimit: 1
     });
     $scope.uploader.onBeforeUploadItem = onBeforeUploadItem;
     function onBeforeUploadItem(item) {
