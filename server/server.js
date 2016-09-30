@@ -126,9 +126,10 @@ app.route("/adverts").put( function(req,res) {
 
 app.route("/adverts").delete( function(req,res) {
     var userLogin = req.session.user.login;
+    var userRole = req.session.user.role;
     var advertCreatedBy = req.body.createdBy;
     var advertId = req.body.id;
-    if(userLogin != advertCreatedBy){
+    if(userLogin != advertCreatedBy && userRole != 'admin'){
         res.status(404).json({error: 'Нет прав на совершение операции!'});
     }
 
