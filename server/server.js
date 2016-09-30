@@ -125,11 +125,17 @@ app.route("/adverts").put( function(req,res) {
 });
 
 app.route("/adverts").delete( function(req,res) {
+    var userLogin = req.session.user.login;
+    var advertCreatedBy = req.body.createdBy;
+    var advertId = req.body.id;
+    if(userLogin != advertCreatedBy){
+        res.status(404).json({error: 'Нет прав на совершение операции!'});
+    }
+
     if(!req.session.user){
         res.sendStatus(403);
     } else {
-        var id = req.body.advertId;
-        Advert.remove({ _id: id }, function (err) {
+        Advert.remove({ _id: advertId }, function (err) {
             res.send();
         });
     }

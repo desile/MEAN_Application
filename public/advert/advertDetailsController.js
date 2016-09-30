@@ -11,7 +11,7 @@ meanapp.controller('advertDetailsController', function ($http, $uibModalInstance
         $http({
                 method: 'DELETE',
                 url: url + '/adverts',
-                data:  {advertId: advert._id},
+                data:  {id: advert._id, createdBy: advert.createdBy},
                 headers: {'Content-Type': 'application/json;charset=utf-8'}
         }).then(
             function(res) {
