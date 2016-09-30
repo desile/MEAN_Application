@@ -5,11 +5,6 @@ meanapp.controller('advertCreateController', function ($http, $scope, $uibModalI
         alias: 'advImg',
         queueLimit: 1
     });
-    $scope.uploader.onBeforeUploadItem = onBeforeUploadItem;
-    function onBeforeUploadItem(item) {
-        item.formData.push({id: 'data'});
-        console.log(item);
-    }
 
     $ctrl.advert = {};
 
