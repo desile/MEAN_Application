@@ -20,7 +20,7 @@ meanapp.controller('advertDetailsController', function ($http, $uibModalInstance
     };
 
     $ctrl.canDelete = function () {
-        return app.loggedAs.login == app.advert.createdBy || loggedAs.role == 'admin';
+        return loggedAs.login == advert.createdBy || loggedAs.role == 'admin';
     };
 
     $ctrl.ok = function () {
