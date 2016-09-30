@@ -43,7 +43,6 @@
                         {{app.advert.description}}
                     </div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-sm-4">
                         <b>Адрес:</b>
@@ -52,12 +51,22 @@
                         {{app.advert.location}}
                     </div>
                 </div>
+                <uib-accordion ng-if="app.isUserHasPermissions()">
+                    <hr>
+                    <div uib-accordion-group class="panel-default" heading="Откликнувшиеся пользователи">
+                        <ul class="list-group">
+                            <li class="list-group-item">1</li>
+                            <li class="list-group-item">2</li>
+                            <li class="list-group-item">3</li>
+                        </ul>
+                    </div>
+                </uib-accordion>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-if="app.canDelete()" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
-        <button class="btn btn-primary" type="button" ng-click="app.ok()">Откликнуться</button>
+        <button ng-if="app.isUserHasPermissions()" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
+        <button ng-if="!app.isCurrentUserOwner() && app.loggedAs" class="btn btn-primary" type="button" ng-click="app.ok()">Откликнуться</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Закрыть</button>
     </div>
 </div>

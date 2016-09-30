@@ -19,8 +19,12 @@ meanapp.controller('advertDetailsController', function ($http, $uibModalInstance
             });
     };
 
-    $ctrl.canDelete = function () {
-        return loggedAs.login == advert.createdBy || loggedAs.role == 'admin';
+    $ctrl.isUserHasPermissions = function () {
+        return $ctrl.isCurrentUserOwner() || loggedAs.role == 'admin';
+    };
+
+    $ctrl.isCurrentUserOwner = function () {
+        return loggedAs.login == advert.createdBy;
     };
 
     $ctrl.ok = function () {
