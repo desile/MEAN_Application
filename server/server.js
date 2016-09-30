@@ -57,7 +57,6 @@ var storage = multer.diskStorage({
         cb(null, './imgs/');
     },
     filename: function (req, file, cb){
-        console.log(req);
         cb(null, req.body.id + ".jpg");
     }
 });
@@ -130,7 +129,7 @@ app.route("/adverts").delete( function(req,res) {
         res.sendStatus(403);
     } else {
         var id = req.body.advertId;
-        Advert.remove({ id: id }, function (err) {
+        Advert.remove({ _id: id }, function (err) {
             res.send();
         });
     }
