@@ -1,9 +1,59 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">Описание <span ng-bind="app.advert.title"></span></h3>
+        <h3 class="modal-title">{{app.advert.title}}</h3>
     </div>
     <div class="modal-body">
-        <img class="img-thumbnail" style="height: 300px" ng-src="{{app.imgPath}}"/>
+        <div class="row">
+            <div class="col-sm-4">
+                <img class="img-thumbnail" style="height: 300px" ng-src="{{app.imgPath}}"/>
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Размер жилплощади:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        {{app.advert.flatSize}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Количество комнат:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        {{app.advert.roomNumber}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Тип апартаментов:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        {{app.advert.type}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Описание:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        {{app.advert.description}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Адрес:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        {{app.advert.location}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button ng-if="app.canDelete()" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>

@@ -69,6 +69,7 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
             templateUrl: 'advert/advertDetailsModal.html',
             controller: 'advertDetailsController',
             controllerAs: 'app',
+            size: 'lg',
             resolve: {
                 advert: function () {
                     return advert;
