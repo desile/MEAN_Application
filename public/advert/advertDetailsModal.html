@@ -6,7 +6,7 @@
         <img class="img-thumbnail" style="height: 300px" ng-src="{{app.imgPath}}"/>
     </div>
     <div class="modal-footer">
-        <button ng-if="app.loggedAs.login == app.advert.createdBy" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
+        <button ng-if="app.canDelete()" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
         <button class="btn btn-primary" type="button" ng-click="app.ok()">Откликнуться</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Закрыть</button>
     </div>
