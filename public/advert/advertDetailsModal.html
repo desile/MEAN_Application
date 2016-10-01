@@ -54,9 +54,9 @@
                 <uib-accordion ng-if="app.isUserHasPermissions()">
                     <hr>
                     <div uib-accordion-group class="panel-default" heading="Откликнувшиеся пользователи">
-                        <ul ng-repeat="resp in app.responds" class="list-group">
-                            <li class="list-group-item">{{resp.phone}} ({{resp.sName}} {{resp.fName}})</li>
-                        </ul>
+                        <div ng-repeat="resp in app.responds">
+                            {{resp.phone}} ({{resp.sName}} {{resp.fName}})<hr ng-if="app.responds.length > 1">
+                        </div>
                     </div>
                 </uib-accordion>
             </div>
