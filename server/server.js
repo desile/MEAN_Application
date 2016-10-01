@@ -15,14 +15,10 @@ var app = express();
 
 /*
 TASK LIST
-1. Составить структуру модели Advert
-2. Взаимодействовать с объектами Advert в базе через их ID
-3. Наполнить форму для полноценного добавления объектов Advert (можно пока без фото)
-4. Наполнить темплэйт для полноценного просмотрао объектов Advert
-
-5. (?) Поменять loggedAs на нормальное название
-6. Сделать предобработчик запросов с проверкой ролей
-
+1. Сделать предобработчик запросов с проверкой ролей
+2. Ввести логирование
+3. Сделать что-то с кучей вложенных колбэков
+4. Описать спецификацию сервисов
  */
 
 
@@ -38,6 +34,8 @@ var corsOptions = {
     credentials: true
 };
 
+var sessionStore = new session.MemoryStore();
+
 app.use(cors(corsOptions));
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.use(logger('dev'));
@@ -46,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser());
 app.use(session({
+    store: sessionStore,
     secret: 'secret_key',
     saveUninitialized: false,
     resave: false
@@ -68,7 +67,7 @@ var upload = multer({ //multer settings
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/meanapp');
 
-var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, img:String, description:String, createdBy:String });
+var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, img:String, description:String, createdBy:String, responds:[String] });
 var User = mongoose.model('User', {login:{type:String, unique:true}, password:String, email:String, role:String, phone:String, fName:String, sName:String});
 
 app.route("/").get( function(req,res){
@@ -97,6 +96,107 @@ app.route("/adverts/img").post( function(req, res) {
         }
         res.json({error_code:0,err_desc:null});
     })
+});
+
+app.route("/adverts/checkrespond").post(function (req,res) {
+    sessionStore.get(req.sessionID, function(err, session){
+        if(!session) {
+            res.json({respond: 0});
+        } else {
+            var advertId = req.body.id;
+            var login = req.session.user.login;
+            Advert.findById(advertId, function(err,advert){
+                if(err){
+                    res.json({error: err});
+                } else {
+                    if(advert.responds && advert.responds.indexOf(login) > -1){
+                        res.json({respond: 1});
+                    } else {
+                        res.json({respond: 0});
+                    }
+                }
+            });
+        }
+    });
+});
+
+app.route("/adverts/responds").get(function(req,res) {
+    sessionStore.get(req.sessionID, function(err, session){
+        if(!session) {
+            res.status(200).json({error: "Нет прав на совершение операции!"});
+        } else {
+            var userLogin = req.session.user.login;
+            var userRole = req.session.user.role;
+            var advertCreatedBy = req.query.createdBy;
+            var advertId = req.query.id;
+            if(userLogin != advertCreatedBy && userRole != 'admin'){
+                res.status(200).json({error: 'Нет прав на совершение операции!'});
+            } else {
+                Advert.findById(advertId, function (err, advert) {
+                    if (err) {
+                        res.status(200).json({description: "Произошла ошибка!", err: err});
+                    } else {
+                        User.find({
+                            login: {
+                                $in: advert.responds
+                            }
+                        }, function (err, users) {
+                            if (err) {
+                                res.status(200).json({description: "Произошла ошибка!", err: err});
+                            }
+                            else {
+                                res.status(200).json({
+                                    responds: users.map(function (user) {
+                                        return {fName: user.fName, sName: user.sName, phone: user.phone};
+                                    })
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+app.route("/adverts/responds").post (function(req,res) {
+    sessionStore.get(req.sessionID, function (err, session) {
+        if (!session) {
+            res.json({respond: 0});
+        } else {
+            var login = req.session.user.login;
+            var advertId = req.body.id;
+            var respond = req.body.respond;
+            if (respond == 1) {
+                Advert.findByIdAndUpdate(
+                    advertId,
+                    {$push: {"responds": login}},
+                    {safe: true, upsert: true},
+                    function (err) {
+                        if (err) {
+                            res.json({error: err});
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    }
+                );
+            } else {
+                Advert.findByIdAndUpdate(
+                    advertId,
+                    {$pull: {"responds": login}},
+                    {safe: true},
+                    function (err) {
+                        if (err) {
+                            res.json({error: err});
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    }
+                );
+            }
+        }
+
+    });
 });
 
 app.route("/adverts").put( function(req,res) {
