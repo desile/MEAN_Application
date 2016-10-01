@@ -3,7 +3,6 @@
  */
 var meanapp = angular.module("meanapp",['ui.bootstrap','angularFileUpload']);
 var url = "http://localhost:3111";
-var serverUrl = url;
 
 meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
     var app = this;
