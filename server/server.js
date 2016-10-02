@@ -49,7 +49,6 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }));
-//app.use(express.static(path.join(__dirname, 'public')));
 
 var storage = multer.diskStorage({
     destination: function (req, file ,cb){
@@ -282,14 +281,3 @@ app.route("/register").post( function (req,res){
 });
 
 app.listen(3111);
-
-/*
-var advert = new Advert({name: "SomeProduct"});
-advert.save(function(err){
-    if(err){
-        console.log("failed");
-    } else {
-        console.log("saved");
-    }
-});
-*/
