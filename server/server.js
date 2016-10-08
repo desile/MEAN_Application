@@ -283,7 +283,7 @@ app.route("/login").post( function(req,res) {
 });
 
 app.route("/logout").get( function(req,res) {
-    req.session.user = null;
+    req.session.destroy();
     res.sendStatus(200);
 });
 
