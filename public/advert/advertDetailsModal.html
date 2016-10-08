@@ -65,7 +65,7 @@
     <div class="modal-footer">
         <button ng-if="app.isUserHasPermissions()" class="btn btn-danger" type="button" ng-click="app.delete()">Удалить</button>
         <button ng-if="!app.isCurrentUserOwner() && app.loggedAs" class="btn btn-primary" type="button" ng-model="app.respond" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-click="app.makeRespond()">
-            <span ng-if="app.respond == 0">Откликнуться</span><span ng-if="app.respond == 1">Убрать отклик</span>
+            <span ng-if="app.respond == 0 && app.loggedAs">Откликнуться</span><span ng-if="app.respond == 1 && app.loggedAs">Убрать отклик</span>
         </button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Закрыть</button>
     </div>
