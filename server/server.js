@@ -58,6 +58,7 @@ var storage = multer.diskStorage({
         cb(null, req.body.id + ".jpg");
     }
 });
+
 var upload = multer({ //multer settings
     storage: storage
 }).single('advImg');
@@ -68,6 +69,60 @@ mongoose.connect('mongodb://localhost/meanapp');
 
 var Advert = mongoose.model('Advert', {title:String, flatSize:Number, roomNumber:Number, type:String, location:String, img:String, description:String, createdBy:String, responds:[String] });
 var User = mongoose.model('User', {login:{type:String, unique:true}, password:String, email:String, role:String, phone:String, fName:String, sName:String});
+
+var userRoutesAllowed = [
+    {
+        url: "/adverts/checkrespond",
+        method: "POST"
+    },
+    {
+        url: "/adverts/responds",
+        method: "GET"
+    },
+    {
+        url: "/adverts/responds",
+        method: "POST"
+    },
+    {
+        url: "/adverts",
+        method: "PUT"
+    },
+    {
+        url: "/adverts",
+        method: "DELETE"
+    }
+];
+
+var arrayContainsObject = function(array, object, attributes){
+    mainLoop:
+        for(var i = 0; i < array.length; i++){
+            for(attr in attributes){
+                if(object[attributes[attr]] != array[i][attributes[attr]]){
+                    continue mainLoop;
+                }
+            }
+        return true;
+        }
+    return false;
+};
+
+app.use(function (req, res, next) {
+    var request = {
+        url: req.path,
+        method: req.method
+    };
+    if(arrayContainsObject(userRoutesAllowed,request,["url","method"])){
+        sessionStore.get(req.sessionID, function(err, session) {
+            if (!session) {
+                res.status(200).json({error: "Нет прав на совершение операции!"});
+            } else {
+                next();
+            }
+        });
+    } else {
+        next();
+    }
+});
 
 app.route("/").get( function(req,res){
    res.send(req.session.user);
@@ -98,10 +153,6 @@ app.route("/adverts/img").post( function(req, res) {
 });
 
 app.route("/adverts/checkrespond").post(function (req,res) {
-    sessionStore.get(req.sessionID, function(err, session){
-        if(!session) {
-            res.json({respond: 0});
-        } else {
             var advertId = req.body.id;
             var login = req.session.user.login;
             Advert.findById(advertId, function(err,advert){
@@ -115,15 +166,9 @@ app.route("/adverts/checkrespond").post(function (req,res) {
                     }
                 }
             });
-        }
-    });
 });
 
 app.route("/adverts/responds").get(function(req,res) {
-    sessionStore.get(req.sessionID, function(err, session){
-        if(!session) {
-            res.status(200).json({error: "Нет прав на совершение операции!"});
-        } else {
             var userLogin = req.session.user.login;
             var userRole = req.session.user.role;
             var advertCreatedBy = req.query.createdBy;
@@ -154,15 +199,9 @@ app.route("/adverts/responds").get(function(req,res) {
                     }
                 });
             }
-        }
-    });
 });
 
 app.route("/adverts/responds").post (function(req,res) {
-    sessionStore.get(req.sessionID, function (err, session) {
-        if (!session) {
-            res.json({respond: 0});
-        } else {
             var login = req.session.user.login;
             var advertId = req.body.id;
             var respond = req.body.respond;
@@ -193,15 +232,9 @@ app.route("/adverts/responds").post (function(req,res) {
                     }
                 );
             }
-        }
-
-    });
 });
 
 app.route("/adverts").put( function(req,res) {
-    if(!req.session.user){
-        res.sendStatus(403);
-    } else {
         var reqAdvert = {
             title: req.body.title,
             flatSize: req.body.flatSize,
@@ -220,7 +253,6 @@ app.route("/adverts").put( function(req,res) {
                 res.status(200).json(createdAdvert);
             }
         });
-    }
 });
 
 app.route("/adverts").delete( function(req,res) {
@@ -232,13 +264,9 @@ app.route("/adverts").delete( function(req,res) {
         res.status(404).json({error: 'Нет прав на совершение операции!'});
     }
 
-    if(!req.session.user){
-        res.sendStatus(403);
-    } else {
         Advert.remove({ _id: advertId }, function (err) {
             res.send();
         });
-    }
 });
 
 app.route("/login").post( function(req,res) {
