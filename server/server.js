@@ -10,7 +10,7 @@ var cookieParser = require('cookie-parser');
 var multer = require('multer');
 var validator = require('express-validator');
 var path = require('path');
-
+var log4js = require('log4js');
 var app = express();
 
 
@@ -26,11 +26,29 @@ var corsOptions = {
     credentials: true
 };
 
+log4js.configure({
+    appenders: [
+        {
+            type: 'console'
+        },
+        {
+            type: 'file',
+            filename: 'logs/devLog.log',
+            "pattern": "-yyyy-MM-dd",
+            "alwaysIncludePattern": false,
+            category: 'devLog'
+        }
+    ]
+});
+var logger = log4js.getLogger('devLog');
+logger.setLevel('DEBUG');
+logger.info('NEW SERVER SESSION');
+
 var sessionStore = new session.MemoryStore();
+
 
 app.use(cors(corsOptions));
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(validator());
@@ -117,6 +135,7 @@ var arrayContainsObject = function (array, object, attributes) {
 };
 
 app.use(function (req, res, next) {
+    logger.info('REQUEST: ' + '(' + (req.session.user ? req.session.user.login : '---') + ') ' + req.method + ' ' + req.url );
     var request = {
         url: req.path,
         method: req.method
@@ -124,7 +143,9 @@ app.use(function (req, res, next) {
     if (arrayContainsObject(userRoutesAllowed, request, ["url", "method"])) {
         sessionStore.get(req.sessionID, function (err, session) {
             if (!session) {
-                res.status(200).json({error: "Нет прав на совершение операции!"});
+                var errorJSON = {error: "Нет прав на совершение операции!"};
+                logger.info(errorJSON);
+                res.status(200).json(errorJSON);
             } else {
                 next();
             }
