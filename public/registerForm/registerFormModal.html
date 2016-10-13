@@ -3,30 +3,30 @@
         <h3 class="modal-title">Регистрация нового пользователя</h3>
     </div>
     <div class="modal-body">
-        <form>
+        <form name="regForm">
             <div class="form-group">
                 <label for="regLogin">Логин:</label>
-                <input type="text" class="form-control" id="regLogin" ng-model="app.reg.login">
+                <input type="" class="form-control" name="login" id="regLogin" ng-model="app.reg.login" required>
             </div>
             <div class="form-group">
                 <label for="regPwd">Пароль:</label>
-                <input type="password" class="form-control" id="regPwd" ng-model="app.reg.pass">
+                <input type="password" class="form-control" name="pwd" id="regPwd" ng-model="app.reg.pass" required>
             </div>
             <div class="form-group">
-                <label for="regEmail">Email:</label>
-                <input type="email" class="form-control" id="regEmail" ng-model="app.reg.email">
+                <label for="regEmail">Email: <span style="color: red" ng-show="regForm.email.$error.email && regForm.email.$touched"><i>Email заполнен неверно</i></span></label>
+                <input type="email" class="form-control" name="email" id="regEmail" ng-model="app.reg.email" required>
             </div>
             <div class="form-group">
-                <label for="regPhone">Телефон:</label>
-                <input type="tel" class="form-control" id="regPhone" ng-model="app.reg.phone">
+                <label for="regPhone">Телефон: <span style="color: red" ng-show="regForm.phone.$error.phone && regForm.phone.$touched"><i>Телефон заполнен неверно</i></span></label>
+                <input type="tel" pattern="(\+?\d[- .]*){7,13}" class="form-control" name="phone" id="regPhone" ng-model="app.reg.phone" required>
             </div>
             <div class="form-group">
                 <label for="regFName">Имя:</label>
-                <input type="text" class="form-control" id="regFName" ng-model="app.reg.fName">
+                <input type="text" class="form-control" name="fname" id="regFName" ng-model="app.reg.fName" required>
             </div>
             <div class="form-group">
                 <label for="regSName">Фамилия:</label>
-                <input type="text" class="form-control" id="regSName" ng-model="app.reg.sName">
+                <input type="text" class="form-control" name="sname" id="regSName" ng-model="app.reg.sName" required>
             </div>
             <div id="registerError" class="alert alert-danger collapse">
                 <a class="close" ng-click="app.closeError()">&times;</a>
@@ -35,7 +35,8 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="app.ok()">Войти!</button>
+        <span ng-if="regForm.$invalid"><i>Все поля обязательны.</i></span>
+        <button class="btn btn-primary" type="button" ng-disabled="regForm.$invalid" ng-click="app.ok()">Войти!</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Я передумал...</button>
     </div>
 </div>

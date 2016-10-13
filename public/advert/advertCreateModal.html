@@ -3,34 +3,34 @@
         <h3 class="modal-title">Размещение объявления</h3>
     </div>
     <div class="modal-body">
-        <form>
+        <form name="crAdvert">
             <div class="form-group">
                 <label for="advTitle">Название:</label>
-                <input type="text" class="form-control" id="advTitle" ng-model="app.advert.title">
+                <input type="text" name="title" class="form-control" id="advTitle" ng-model="app.advert.title" required>
             </div>
             <div class="form-group">
                 <label for="advFlatSize">Размер жиплощади:</label>
-                <input type="number" class="form-control" id="advFlatSize" ng-model="app.advert.flatSize">
+                <input type="number" name="flatSize" class="form-control" id="advFlatSize" ng-model="app.advert.flatSize" required>
             </div>
             <div class="form-group">
                 <label for="advRoomNumber">Количество комнат:</label>
-                <input type="number" class="form-control" id="advRoomNumber" ng-model="app.advert.roomNumber">
+                <input type="number" name="roomNumber" class="form-control" id="advRoomNumber" ng-model="app.advert.roomNumber" required>
             </div>
             <div class="form-group">
                 <label for="advType">Тип жилища:</label>
-                <input type="text" class="form-control" id="advType" ng-model="app.advert.type">
+                <input type="text" name="roomType" class="form-control" id="advType" ng-model="app.advert.type" required>
             </div>
             <div class="form-group">
                 <label for="advLocation">Месторасположение:</label>
-                <input type="text" class="form-control" id="advLocation" ng-model="app.advert.location">
+                <input type="text" name="location" class="form-control" id="advLocation" ng-model="app.advert.location" required>
             </div>
             <div class="form-group">
                 <label for="advDescription">Описание:</label>
-                <input type="text" class="form-control" id="advDescription" ng-model="app.advert.description">
+                <input type="text" name="description" class="form-control" id="advDescription" ng-model="app.advert.description" required>
             </div>
             <div class="form-group" style="margin-bottom: 5px">
                 <label for="advImg"  class="btn btn-primary" ng-click="uploader.clearQueue()">Выбрать фотографию</label>
-                <input type="file" name="advImg" id="advImg" nv-file-select="" uploader="uploader" style="visibility:hidden; height: 1px">
+                <input type="file" name="img" name="advImg" id="advImg" nv-file-select="" uploader="uploader" style="visibility:hidden; height: 1px">
             </div>
             <table class="table-condensed">
             <tr ng-repeat="item in uploader.queue">
@@ -53,7 +53,8 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="app.ok()">Разместить объявление</button>
+        <span ng-if="crAdvert.$invalid"><i>Все поля обязательны.</i></span>
+        <button class="btn btn-primary" type="button" ng-disabled="crAdvert.$invalid" ng-click="app.ok()">Разместить объявление</button>
         <button class="btn btn-warning" type="button" ng-click="app.cancel()">Отмена</button>
     </div>
 </div>
