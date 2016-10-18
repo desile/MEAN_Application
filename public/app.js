@@ -18,7 +18,7 @@ meanapp.controller("AppCtrl",['$http', '$uibModal', function($http,$uibModal){
 
     app.logout = function () {
         $http.get(url + "/logout").success(function(){
-            app.loggedAs = {};
+            app.loggedAs = null;
         })
     };
 
