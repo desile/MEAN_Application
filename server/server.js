@@ -301,13 +301,14 @@ app.route("/adverts").delete(function (req, res) {
 });
 
 app.route("/login").post(function (req, res) {
-    var login = req.body.login;
-    User.findOne({login: login}, function (err, user) {
+    var body = req.body;
+
+    User.findOne({login: body.login, password: body.pass}, function (err, user) {
         if (user) {
             req.session.user = {login: user.login, role: user.role};
             res.status(200).send({login: user.login, role: user.role});
         } else {
-            res.status(200).json({error: 'Пользователь не найден'});
+            res.status(200).json({error: 'Аутентификация отклонена (неверный логин или пароль).'});
         }
     });
 

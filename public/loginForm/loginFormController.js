@@ -7,7 +7,7 @@ meanapp.controller('loginFormController', function ($http, $uibModalInstance) {
     $http.defaults.withCredentials = true;
 
     $ctrl.ok = function () {
-        $http.post(url + "/login", {login:$ctrl.typed.login}).then(
+        $http.post(url + "/login", $ctrl.typed).then(
             function(res){
                 if('error' in res.data) {
                     $ctrl.error = res.data.error;
