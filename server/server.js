@@ -16,6 +16,7 @@ var app = express();
 
 var whitelist = [
     'http://localhost:3111',
+    'http://localhost:63343',
     'http://localhost:63342'
 ];
 var corsOptions = {
